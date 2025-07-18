@@ -130,6 +130,23 @@ const getVideoById = asyncHandler(async (req, res) => {
     // Increment views count
     video.views += 1
     await video.save()
+
+    if (req.user && req.user._id) {
+    await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $pull: { history: videoId }, // Remove if already exists (to avoid duplicates)
+      },
+      { new: true }
+    );
+    
+    await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $push: { history: { $each: [videoId], $position: 0 } }, // Add to beginning of array
+      }
+    );
+    }
     return res.status(200).json(new ApiResponse(200, video, "Video retrieved successfully"))
 })
 

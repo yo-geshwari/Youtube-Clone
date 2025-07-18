@@ -27,7 +27,7 @@ router.route("/publish").post(
 )
 router.route("/search").get(getAllVideos)
 router.route("/:videoId")
-    .get(getVideoById)
+    .get(verifyJWT, getVideoById)
     .patch(verifyJWT, upload.fields([ 
         {
             name: "thumbnail",
