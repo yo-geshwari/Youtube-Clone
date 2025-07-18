@@ -135,7 +135,7 @@ const getVideoById = asyncHandler(async (req, res) => {
     await User.findByIdAndUpdate(
       req.user._id,
       {
-        $pull: { history: videoId }, // Remove if already exists (to avoid duplicates)
+        $pull: { watchHistory: videoId }, // Remove if already exists (to avoid duplicates)
       },
       { new: true }
     );
@@ -143,10 +143,11 @@ const getVideoById = asyncHandler(async (req, res) => {
     await User.findByIdAndUpdate(
       req.user._id,
       {
-        $push: { history: { $each: [videoId], $position: 0 } }, // Add to beginning of array
+        $push: { watchHistory: { $each: [videoId], $position: 0 } }, // Add to beginning of array
       }
     );
     }
+    console.log(req.user.watchHistory)
     return res.status(200).json(new ApiResponse(200, video, "Video retrieved successfully"))
 })
 
