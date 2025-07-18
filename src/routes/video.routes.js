@@ -12,6 +12,7 @@ import { getAllVideos,
 const router = Router()
 
 router.route("/publish").post(
+    verifyJWT,
     upload.fields([
         {
             name: "videoFile",
