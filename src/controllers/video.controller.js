@@ -94,11 +94,11 @@ const publishAVideo = asyncHandler(async (req, res) => {
     if (!thumbnailFile) throw new ApiError(400, "Thumbnail is required");
 
     // Upload video
-    const videoResponse = await uploadOnCloudinary(videoFile.path);
+    const videoResponse = await uploadOnCloudinary(videoFile.buffer);
     if (!videoResponse?.secure_url) throw new ApiError(500, "Video upload failed");
 
     // Upload thumbnail
-    const thumbnailResponse = await uploadOnCloudinary(thumbnailFile.path);
+    const thumbnailResponse = await uploadOnCloudinary(thumbnailFile.buffer);
     if (!thumbnailResponse?.secure_url) throw new ApiError(500, "Thumbnail upload failed");
 
     // Create a new video document
